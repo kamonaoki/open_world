@@ -1,1 +1,27 @@
-<div id="map" style="height: 500px; width: 100%;"></div>
+<div id="map" style="height: 600px; width: 100%;"></div>
+
+<div id="form-container" style="display: none;">
+  <%= form_with(model: @post, local: true, url: posts_path) do |form| %>
+      <%= form.hidden_field :latitude, id: 'post_latitude' %>
+      <%= form.hidden_field :longitude, id: 'post_longitude' %>
+
+    <div class="field">
+      <%= form.label :title %>
+      <%= form.text_field :title %>
+    </div>
+
+    <div class="field">
+      <%= form.label :description %>
+      <%= form.text_area :description %>
+    </div>
+    
+    <div class="field">
+      <%= form.label :image %>
+      <%= form.file_field :image %>
+    </div>
+
+    <div class="actions">
+      <%= form.submit 'Create Post' %>
+    </div>
+  <% end %>
+</div>

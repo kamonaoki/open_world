@@ -1,6 +1,7 @@
 class PostsController < ApplicationController
   def index
     @posts = Post.all
+    @post = Post.new
     respond_to do |format|
       format.html
       format.json { render json: @posts.map { |post| post.as_json.merge(image_url: url_for(post.image)) } }
@@ -14,7 +15,7 @@ class PostsController < ApplicationController
   def create
     @post = Post.new(post_params)
     if @post.save
-      redirect_to posts_path, notice: 'Post was successfully created.'
+      redirect_to posts_url, notice: 'Post was successfully created.'
     else
       render :new
     end
