@@ -15,9 +15,12 @@ class PostsController < ApplicationController
   def create
     @post = Post.new(post_params)
     if @post.save
-      redirect_to posts_url, notice: 'Post was successfully created.'
+      if params[:post][:image].present?
+        @post.image.attach(params[:post][:image])
+      end
+      render json: { status: 'success', post: @post, redirect_url: posts_path }
     else
-      render :new
+      render json: { status: 'error', errors: @post.errors.full_messages }
     end
   end
 
