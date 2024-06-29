@@ -6,6 +6,16 @@ document.addEventListener('DOMContentLoaded', () => {
   if (document.getElementById('map')) {
     initMap();
   }
+  
+  // フォームの閉じるボタン
+  document.querySelector('.close-form').addEventListener('click', function() {
+    document.getElementById('form-container').style.display = 'none';
+  });
+
+  // カスタムインフォウィンドウの閉じるボタン
+  document.querySelector('.close-custom-window').addEventListener('click', function() {
+    document.getElementById('custom-infowindow').style.display = 'none';
+  });
 });
 
 let currentMarker;
@@ -20,10 +30,181 @@ function initMap() {
         lng: position.coords.longitude
       };
 
-      map = new google.maps.Map(document.getElementById('map'), {
-        center: userLocation,
-        zoom: 15
-      });
+   // 緑豊かなマップスタイルを設定
+   const mapStyle = [
+    {
+      "elementType": "geometry",
+      "stylers": [
+        { "color": "#e7f0c3" }
+      ]
+    },
+    {
+      "elementType": "labels.text.fill",
+      "stylers": [
+        { "color": "#6b8e23" }
+      ]
+    },
+    {
+      "elementType": "labels.text.stroke",
+      "stylers": [
+        { "color": "#ffffff" }
+      ]
+    },
+    {
+      "featureType": "administrative",
+      "elementType": "geometry.stroke",
+      "stylers": [
+        { "color": "#c0c0c0" }
+      ]
+    },
+    {
+      "featureType": "administrative.land_parcel",
+      "elementType": "geometry.stroke",
+      "stylers": [
+        { "color": "#dcd2be" }
+      ]
+    },
+    {
+      "featureType": "administrative.land_parcel",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        { "color": "#ae9e90" }
+      ]
+    },
+    {
+      "featureType": "landscape.natural",
+      "elementType": "geometry",
+      "stylers": [
+        { "color": "#b7e6a7" }
+      ]
+    },
+    {
+      "featureType": "poi",
+      "elementType": "geometry",
+      "stylers": [
+        { "color": "#b7e6a7" }
+      ]
+    },
+    {
+      "featureType": "poi",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        { "color": "#6b8e23" }
+      ]
+    },
+    {
+      "featureType": "poi.park",
+      "elementType": "geometry.fill",
+      "stylers": [
+        { "color": "#76c769" }
+      ]
+    },
+    {
+      "featureType": "poi.park",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        { "color": "#3a5f0b" }
+      ]
+    },
+    {
+      "featureType": "road",
+      "elementType": "geometry",
+      "stylers": [
+        { "color": "#ffffff" }
+      ]
+    },
+    {
+      "featureType": "road.arterial",
+      "elementType": "geometry",
+      "stylers": [
+        { "color": "#fefefe" }
+      ]
+    },
+    {
+      "featureType": "road.highway",
+      "elementType": "geometry",
+      "stylers": [
+        { "color": "#f8c967" }
+      ]
+    },
+    {
+      "featureType": "road.highway",
+      "elementType": "geometry.stroke",
+      "stylers": [
+        { "color": "#e9bc62" }
+      ]
+    },
+    {
+      "featureType": "road.highway.controlled_access",
+      "elementType": "geometry",
+      "stylers": [
+        { "color": "#e98d58" }
+      ]
+    },
+    {
+      "featureType": "road.highway.controlled_access",
+      "elementType": "geometry.stroke",
+      "stylers": [
+        { "color": "#db8555" }
+      ]
+    },
+    {
+      "featureType": "road.local",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        { "color": "#806b63" }
+      ]
+    },
+    {
+      "featureType": "transit.line",
+      "elementType": "geometry",
+      "stylers": [
+        { "color": "#b7e6a7" }
+      ]
+    },
+    {
+      "featureType": "transit.line",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        { "color": "#8f7d77" }
+      ]
+    },
+    {
+      "featureType": "transit.line",
+      "elementType": "labels.text.stroke",
+      "stylers": [
+        { "color": "#e7f0c3" }
+      ]
+    },
+    {
+      "featureType": "transit.station",
+      "elementType": "geometry",
+      "stylers": [
+        { "color": "#b7e6a7" }
+      ]
+    },
+    {
+      "featureType": "water",
+      "elementType": "geometry.fill",
+      "stylers": [
+        { "color": "#a1cdfc" }
+      ]
+    },
+    {
+      "featureType": "water",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        { "color": "#92998d" }
+      ]
+    }
+  ];
+
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: userLocation,
+    zoom: 15,
+    styles: mapStyle // ここでスタイルを適用
+  });
+
 
       new google.maps.Marker({
         position: userLocation,
@@ -32,6 +213,7 @@ function initMap() {
       });
 
       map.addListener('click', function(event) {
+        placeMarkerAndPanTo(event.latLng, map);
         if (!isMarkerAtLocation(event.latLng)) {
           document.getElementById('custom-infowindow').style.display = 'none';
         }
@@ -195,4 +377,3 @@ document.querySelector('form').addEventListener('submit', function(event) {
   })
   .catch(error => console.error('Error:', error));
 });
-

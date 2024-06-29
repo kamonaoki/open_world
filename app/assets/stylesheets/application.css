@@ -14,18 +14,6 @@
  *= require_self
  */
 
- .custom-infowindow {
-  position: absolute;
-  top: 500px; /* 調整が必要 */
-  right: 30px; /* 調整が必要 */
-  width: 300px;
-  padding: 10px;
-  background-color: white;
-  border: 1px solid #ccc;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  display: none;
-  z-index: 1000;
-}
 
 .image-modal {
   display: none; 
@@ -67,4 +55,206 @@
   .modal-content {
     width: 100%;
   }
+}
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+.header {
+  background-color: #87CEFA; /* 水色 */
+  color: white;
+  padding: 15px 20px;
+  text-align: center;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+}
+.header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+.header nav {
+  margin-top: 10px;
+}
+.header nav a {
+  color: white;
+  text-decoration: none;
+  margin: 0 15px;
+  font-size: 18px;
+}
+.header nav a:hover {
+  text-decoration: underline;
+}
+/* 地図のスタイル */
+#map {
+  margin-top: 80px; /* ヘッダーの高さを考慮してマージンを追加 */
+}
+.custom-infowindow {
+  position: absolute;
+  top: 100px;
+  right: 20px;
+  width: 300px;
+  padding: 10px;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: none;
+  z-index: 1000;
+}
+.image-modal {
+  display: none; 
+  position: fixed;
+  z-index: 1000; 
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; 
+  background-color: rgb(0,0,0); 
+  background-color: rgba(0,0,0,0.9); 
+}
+.close-modal {
+  position: absolute;
+  top: 20px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+}
+.close-modal:hover,
+.close-modal:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+.modal-content {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+}
+@media only screen and (max-width: 700px) {
+  .modal-content {
+    width: 100%;
+  }
+}
+
+/* フォームのスタイル */
+
+#form-container {
+  background-color: #f0f8ff; /* 淡い水色 */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  position: fixed;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+}
+
+#form-container .field {
+  margin-bottom: 15px;
+}
+
+#form-container label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+  font-weight: bold;
+}
+
+#form-container input[type="text"],
+#form-container input[type="file"],
+#form-container textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+#form-container input[type="text"]:focus,
+#form-container input[type="file"]:focus,
+#form-container textarea:focus {
+  border-color: #87CEFA; /* 水色 */
+  outline: none;
+  box-shadow: 0 0 5px rgba(135, 206, 250, 0.5);
+}
+
+#form-container .actions {
+  text-align: right;
+}
+
+#form-container .actions button {
+  background-color: #87CEFA; /* 水色 */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#form-container .actions button:hover {
+  background-color: #00BFFF; /* ディープスカイブルー */
+}
+
+#form-container .close-form {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #aaa;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#form-container .close-form:hover {
+  color: #000;
+}
+
+/* カスタムインフォウィンドウのスタイル */
+.custom-infowindow {
+  position: absolute;
+  top: 100px;
+  right: 20px;
+  width: 300px;
+  padding: 10px;
+  background-color: #87CEFA; /* 水色 */
+  color: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: none;
+  z-index: 1000;
+}
+
+.custom-infowindow .close-custom-window {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.custom-infowindow .close-custom-window:hover {
+  color: #000;
+}
+
+.custom-infowindow h3 {
+  margin: 0 0 10px 0;
+}
+
+.custom-infowindow p {
+  margin: 0 0 10px 0;
+}
+
+.custom-infowindow img {
+  border-radius: 5px;
 }

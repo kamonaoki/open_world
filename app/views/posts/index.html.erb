@@ -1,34 +1,43 @@
-<div id="map" style="height: 800px; width: 100%;"></div>
+<!-- Googleマップ -->
+<div id="map" style="height: 100vh; width: 100%;"></div>
 
+<!-- 投稿フォーム -->
 <div id="form-container" style="display: none;">
+     <span class="close-form">&times;</span>
   <%= form_with(model: @post, local: true, url: posts_path) do |form| %>
       <%= form.hidden_field :latitude, id: 'post_latitude' %>
       <%= form.hidden_field :longitude, id: 'post_longitude' %>
 
     <div class="field">
-      <%= form.label :title %>
+      <%= form.label :タイトル %>
       <%= form.text_field :title %>
     </div>
 
     <div class="field">
-      <%= form.label :description %>
+      <%= form.label :どんな場所になった？ %>
       <%= form.text_area :description %>
     </div>
-    
+   
     <div class="field">
-      <%= form.label :image %>
+      <%= form.label :画像 %>
       <%= form.file_field :image %>
     </div>
 
     <div class="actions">
-      <%= form.submit 'Create Post' %>
+      <%= form.submit 'Post' %>
     </div>
   <% end %>
 </div>
 
-<div id="custom-infowindow" class="custom-infowindow">
-  <div id="custom-infowindow-content"></div>
-</div>
+<!-- カスタムインフォウィンドウ -->
+ <div id="custom-infowindow" class="custom-infowindow">
+    <span class="close-custom-window">&times;</span>
+    <div id="custom-infowindow-content"></div>
+  </div>
+  <div id="image-modal" class="image-modal">
+    <span id="close-modal" class="close-modal">&times;</span>
+    <img class="modal-content" id="modal-image">
+  </div>
 
 <!-- モーダルウィンドウ -->
 <div id="image-modal" class="image-modal">
