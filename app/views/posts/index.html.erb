@@ -1,4 +1,4 @@
-<div id="map" style="height: 600px; width: 100%;"></div>
+<div id="map" style="height: 800px; width: 100%;"></div>
 
 <div id="form-container" style="display: none;">
   <%= form_with(model: @post, local: true, url: posts_path) do |form| %>
@@ -24,4 +24,14 @@
       <%= form.submit 'Create Post' %>
     </div>
   <% end %>
+</div>
+
+<div id="custom-infowindow" class="custom-infowindow">
+  <div id="custom-infowindow-content"></div>
+</div>
+
+<!-- モーダルウィンドウ -->
+<div id="image-modal" class="image-modal">
+  <span id="close-modal" class="close-modal">&times;</span>
+  <img class="modal-content" id="modal-image">
 </div>
