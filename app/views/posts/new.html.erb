@@ -1,30 +1,115 @@
-<%= form_with(model: @post, local: true) do |form| %>
-  <div class="field">
-    <%= form.label :title %>
-    <%= form.text_field :title %>
-  </div>
+<div class="form-container">
+  <h3>画像の位置情報を使って投稿</h3>
+  <!-- フォームの開始 -->
+  <%= form_with(model: @post, local: true, id: "post-form") do |form| %>
+    <div class="field">
+      <%= form.label :タイトル %>
+      <%= form.text_field :title %>
+    </div>
 
-  <div class="field">
-    <%= form.label :description %>
-    <%= form.text_area :description %>
-  </div>
+    <div class="field">
+      <%= form.label :説明 %>
+      <%= form.text_area :description %>
+    </div>
 
-  <div class="field">
-    <%= form.label :latitude %>
-    <%= form.text_field :latitude %>
-  </div>
+    <!-- 緯度経度の非表示フィールド -->
+    <%= form.hidden_field :latitude, id: "post_latitude" %>
+    <%= form.hidden_field :longitude, id: "post_longitude" %>
 
-  <div class="field">
-    <%= form.label :longitude %>
-    <%= form.text_field :longitude %>
-  </div>
+    <div class="field">
+      <%= form.label :画像 %>
+      <%= form.file_field :image, id: "image-upload" %>
+    </div>
 
-  <div class="field">
-    <%= form.label :image %>
-    <%= form.file_field :image %>
-  </div>
+    <div class="actions">
+      <%= form.submit %>
+    </div>
+  <% end %>
+  <!-- EXIF.jsライブラリの読み込み -->
+  <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
+</div>
 
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
+<script>
+// ドキュメントがロードされたときに実行する関数
+document.addEventListener('DOMContentLoaded', function() {
+  // 画像アップロード要素を取得
+  const imageUpload = document.getElementById('image-upload');
+  if (imageUpload) {
+    // 画像がアップロードされたときのイベントリスナーを追加
+    imageUpload.addEventListener('change', handleImageUpload);
+  }
+
+  // 画像アップロードのハンドリング関数
+  function handleImageUpload(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const image = new Image();
+        image.onload = function() {
+          // EXIFデータを取得
+          EXIF.getData(image, function() {
+            console.log('EXIF Data:', EXIF.getAllTags(this)); // デバッグログを追加
+
+            // GPSデータを取得
+            const lat = EXIF.getTag(this, "GPSLatitude");
+            const lng = EXIF.getTag(this, "GPSLongitude");
+            const latRef = EXIF.getTag(this, "GPSLatitudeRef") || "N";
+            const lngRef = EXIF.getTag(this, "GPSLongitudeRef") || "W";
+
+            if (lat && lng) {
+              const latitude = convertDMSToDD(lat, latRef);
+              const longitude = convertDMSToDD(lng, lngRef);
+
+              console.log(`Latitude: ${latitude}, Longitude: ${longitude}`); // デバッグログを追加
+
+              // 緯度経度が有効な場合、フォームの非表示フィールドに設定
+              if (!isNaN(latitude) && !isNaN(longitude)) {
+                document.getElementById('post_latitude').value = latitude;
+                document.getElementById('post_longitude').value = longitude;
+              } else {
+                alert("Invalid GPS data in image.");
+              }
+            } else {
+              alert("No GPS data found in image.");
+            }
+          });
+        };
+        // 画像のデータURLを設定
+        image.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  // DMS（度分秒）をDD（度）に変換する関数
+  function convertDMSToDD(dms, ref) {
+    const degrees = dms[0] + dms[1] / 60 + dms[2] / 3600;
+    return (ref === "S" || ref === "W") ? -degrees : degrees;
+  }
+});
+
+// フォーム送信のイベントリスナーを追加
+document.querySelector('#post-form').addEventListener('submit', function(event) {
+  event.preventDefault(); // デフォルトのフォーム送信を防ぐ
+
+  var formData = new FormData(this); // フォームデータを作成
+  fetch(this.action, {
+    method: 'POST',
+    body: formData,
+    headers: {
+      'X-Requested-With': 'XMLHttpRequest'
+    }
+  })
+  .then(response => response.json()) // レスポンスをJSONとしてパース
+  .then(data => {
+    if (data.status === 'success') {
+      window.location.href = data.redirect_url; // 成功したらトップページにリダイレクト
+    } else {
+      // エラーハンドリング
+      alert('Error: ' + data.errors.join(', '));
+    }
+  })
+  .catch(error => console.error('Error:', error)); // エラーハンドリング
+});
+</script>

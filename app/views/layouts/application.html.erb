@@ -12,10 +12,11 @@
 
   <body>
      <div class="header">
-    <h1>Open World</h1>
+      <h1><%= link_to 'Open World', root_path %></h1>
     <nav>
       <a href="#">マイページ</a>
       <a href="#">地図切り替え</a>
+         <%= link_to '写真の位置情報で投稿', new_post_path %>
       <a href="#">最新の投稿</a>
        <a href="#">ログアウト</a>
     </nav>

@@ -73,6 +73,12 @@ body {
 .header h1 {
   margin: 0;
   font-size: 24px;
+  color: white;
+}
+
+.header h1 a{
+  color: white;
+  text-decoration: none;
 }
 .header nav {
   margin-top: 10px;
@@ -257,4 +263,65 @@ body {
 
 .custom-infowindow img {
   border-radius: 5px;
+}
+
+/* 新規投稿画面 */
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #ffffff; /* 白の背景色 */
+  color: #333;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+h3 {
+  color: #ffffff; /* 濃い水色 */
+}
+.form-container {
+  background-color: #87CEFA; 
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+}
+.field {
+  margin-bottom: 15px;
+}
+.field label {
+  display: block;
+  margin-bottom: 5px;
+  color: #ffffff;
+  font-weight: bold;
+}
+.field input[type="text"],
+.field textarea,
+.field input[type="file"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #87CEFA; /* 濃い水色のボーダー */
+  border-radius: 4px;
+  background-color: #ffffff; /* 薄い水色の背景色 */
+}
+.field input[type="file"] {
+  padding: 3px;
+}
+.actions {
+  text-align: right;
+}
+.actions input[type="submit"] {
+  background-color: #87CEFA; /* 濃い水色 */
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.actions input[type="submit"]:hover {
+  background-color: #87CEFA; /* さらに濃い水色 */
 }
