@@ -258,8 +258,15 @@ function initMap() {
       new google.maps.Marker({
         position: userLocation,
         map: map,
-        title: '現在位置',
-        icon: userLocationIcon
+        title: '今、ここにいるよ',
+        icon: {
+          path: google.maps.SymbolPath.CIRCLE,
+          scale: 10,
+          fillColor: '#0000FF', // 青色
+          fillOpacity: 1,
+          strokeColor: '#FFFFFF',
+          strokeWeight: 2
+        }
       });
 
       // 地図上をクリックしたときにマーカーを置き、地図をその位置にパン
