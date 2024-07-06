@@ -155,7 +155,7 @@ body {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   max-width: 600px;
   position: fixed;
-  top: 80%;
+  top: 75%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1000;
@@ -324,4 +324,207 @@ h3 {
 }
 .actions input[type="submit"]:hover {
   background-color: #87CEFA; /* さらに濃い水色 */
+}
+
+
+
+form input,
+form textarea {
+  width: 100%;
+  border: 1px solid #D8D8D8;
+  border-radius: 5px;
+  font-family: "游ゴシック", "YuGothic";
+}
+
+form input[type="submit"] {
+  background-color: #57C3E9;
+  border-radius: 20px;
+  color: #fff;
+  border: 0;
+  font-size: 18px;
+}
+
+form input[type="submit"]:hover {
+  background-color: #84d3ef;
+}
+
+
+/* サインイン画面 */
+.container {
+  width: 400px; /* コンテナの幅を広くする */
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border: 1px solid #dfe3e6;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  color: #008cba;
+}
+
+.field {
+  margin-bottom: 15px;
+}
+
+.field label {
+  color: #008cba;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.field input[type="email"],
+.field input[type="password"],
+.field input[type="text"] {
+  width: 100%; /* 入力フィールドの幅を100%にする */
+  padding: 10px;
+  border: 1px solid #dfe3e6;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.actions {
+  text-align: center;
+}
+
+.actions input[type="submit"] {
+  background-color: #008cba;
+  color: #ffffff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.actions input[type="submit"]:hover {
+  background-color: #005f6b;
+}
+
+/* プレビュー画像のスタイルを設定 */
+.preview-image {
+  max-width: 100%;  /* 画像の幅を100%に設定 */
+  height: auto;    /* 高さを自動調整 */
+  border-radius: 10px; /* 画像の角を丸くする */
+  margin-top: 10px;    /* 上の余白を追加 */
+}
+
+/*マイページ*/
+.profile-container {
+  width: 90%; /* 幅を90%に設定して画面いっぱいに近づける */
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border: 1px solid #dfe3e6;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+  text-align: center; /* タイトルとアバターを中央揃えにする */
+  border-bottom: 2px solid #008cba;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.profile-header h1 {
+  margin: 0;
+  color: #008cba;
+}
+
+.profile-header .title-underline {
+  width: 100%;
+  height: 2px;
+  background-color: #008cba;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.profile-avatar {
+  margin: 20px auto; /* アバターを中央に配置 */
+}
+
+.profile-avatar img {
+  width: auto;
+  height: 150px; /* 高さを大きく設定 */
+  max-width: 100%;
+  border-radius: 50%; /* 丸くしたい場合はこの行を追加 */
+  border: 3px solid #008cba; /* 目立たせるためにボーダーを追加 */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 画像に影を追加 */
+}
+
+.profile-details {
+  text-align: center; /* 詳細情報を中央揃えにする */
+  margin-bottom: 20px;
+}
+
+.profile-details p {
+  font-size: 16px;
+  color: #333333;
+}
+
+.uploaded-images {
+  margin-top: 20px;
+}
+
+.uploaded-images h2 {
+  color: #008cba;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+}
+
+.uploaded-images .title-underline {
+  width: 100%;
+  height: 2px;
+  background-color: #008cba;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.images-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* 自動調整グリッド */
+  gap: 10px;
+}
+
+.card__wrapper {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card__img {
+  width: 100%;
+  height: auto; /* 高さを自動調整 */
+  max-height: 200px; /* 画像の最大高さを設定 */
+  object-fit: contain; /* 画像のサイズを維持しつつフィット */
+}
+
+.card__body {
+  padding: 10px;
+  text-align: center;
+}
+
+.card__title {
+  font-size: 18px;
+  margin: 10px 0;
+  color: #333;
+}
+
+.card__summary {
+  font-size: 14px;
+  color: #666;
 }

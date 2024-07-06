@@ -34,6 +34,6 @@ class PostsController < ApplicationController
 
   # post_paramsメソッドは、許可された投稿パラメータを指定します。
   def post_params
-    params.require(:post).permit(:title, :description, :latitude, :longitude, :image)
+    params.require(:post).permit(:title, :description, :latitude, :longitude, :image).merge(user_id: current_user.id)
   end
 end

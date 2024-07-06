@@ -73,3 +73,5 @@ end
 
 gem 'dotenv-rails'
 gem 'geocoder'
+gem 'devise'
+gem 'image_processing'
