@@ -1,6 +1,7 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
 import "@hotwired/turbo-rails"
 import "controllers"
+import "preview"
 
 // ドキュメントがロードされたときに実行するイベントリスナーを追加
 document.addEventListener('turbo:load', () => {
