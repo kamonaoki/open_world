@@ -21,19 +21,29 @@
       <%= form.file_field :image, id: "image-upload" %>
     </div>
 
+<div id="image-preview-container" style="display:none;">
+      <img id="image-preview" src="#" alt="Image preview" style="max-width: 100%; height: auto;">
+    </div>
+
+
     <div class="actions">
       <%= form.submit %>
     </div>
+ 
   <% end %>
   <!-- EXIF.jsライブラリの読み込み -->
   <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
 </div>
 
+
 <script>
 // ドキュメントがロードされたときに実行する関数
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('turbo:load', function() {
   // 画像アップロード要素を取得
   const imageUpload = document.getElementById('image-upload');
+  const imagePreviewContainer = document.getElementById('image-preview-container');
+  const imagePreview = document.getElementById('image-preview');
+  
   if (imageUpload) {
     // 画像がアップロードされたときのイベントリスナーを追加
     imageUpload.addEventListener('change', handleImageUpload);
@@ -45,6 +55,10 @@ document.addEventListener('DOMContentLoaded', function() {
     if (file) {
       const reader = new FileReader();
       reader.onload = function(e) {
+        // プレビュー用の画像を設定
+        imagePreview.src = e.target.result;
+        imagePreviewContainer.style.display = 'block';
+        
         const image = new Image();
         image.onload = function() {
           // EXIFデータを取得

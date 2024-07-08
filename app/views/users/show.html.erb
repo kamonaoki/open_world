@@ -1,15 +1,15 @@
-  <div class="profile-container">
-    <div class="profile-header">
-      <h1><%= @user.name %></h1>
-      <div class="profile-avatar">
-        <%= image_tag @user.avatar_url %>
-      </div>
-        <h2>Profile</h2>
+<div class="profile-container">
+  <div class="profile-header">
+    <h1><%= @user.name %></h1>
+    <div class="profile-avatar">
+      <%= image_tag @user.avatar_url %>
     </div>
-    
-    <div class="profile-details">
-      <p><%= @user.profile %></p>
-    </div>
+    <h2>Profile</h2>
+  </div>
+  
+  <div class="profile-details">
+    <p><%= @user.profile %></p>
+  </div>
 
   <div class="uploaded-images">
     <h2>Uploaded Images</h2>
@@ -18,7 +18,7 @@
         <div class="card__wrapper">
           <div class="card">
             <% if post.image.attached? %>
-              <%= image_tag post.image %>
+              <%= image_tag post.image, class: "card__img" %>
             <% end %>
             <div class="card__body">
               <h2 class="card__title"><%= post.title %></h2>
@@ -31,4 +31,41 @@
   </div>
 </div>
 
- 
+<!-- モーダルウィンドウ -->
+<div id="image-modal" class="image-modal">
+  <span id="close-modal" class="close-modal">&times;</span>
+  <img class="modal-content" id="modal-image">
+</div>
+
+ <script>// モーダルウィンドウの初期化
+document.addEventListener('turbo:load', function() {
+  const modal = document.getElementById('image-modal');
+  const modalImg = document.getElementById('modal-image');
+  const closeModal = document.getElementById('close-modal');
+  const images = document.querySelectorAll('.card__img');
+
+  // 画像クリックでモーダル表示
+  images.forEach(image => {
+    image.addEventListener('click', function() {
+      showModal(this.src);
+    });
+  });
+
+  // モーダルを閉じる
+  closeModal.onclick = function() {
+    modal.style.display = "none";
+  };
+
+  // モーダルウィンドウ外をクリックしたときに閉じる
+  modal.onclick = function(event) {
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  };
+
+  function showModal(imageUrl) {
+    modal.style.display = "block";
+    modalImg.src = imageUrl;
+  }
+});
+</script>
