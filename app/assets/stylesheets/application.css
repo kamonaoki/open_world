@@ -354,7 +354,7 @@ form input[type="submit"]:hover {
 /* サインイン画面 */
 .container {
   width: 400px; /* コンテナの幅を広くする */
-  margin: 50px auto;
+  margin: 100px auto;
   padding: 20px;
   background-color: #ffffff;
   border: 1px solid #dfe3e6;
@@ -416,7 +416,7 @@ h2 {
 /*マイページ*/
 .profile-container {
   width: 90%; /* 幅を90%に設定して画面いっぱいに近づける */
-  margin: 50px auto;
+  margin: 80px auto; /* トップマージンを80pxに設定してヘッダーと分離 */
   padding: 20px;
   background-color: #ffffff;
   border: 1px solid #dfe3e6;
@@ -512,7 +512,7 @@ h2 {
   width: 100%;
   height: auto; /* 高さを自動調整 */
   max-height: 200px; /* 画像の最大高さを設定 */
-  object-fit: contain; /* 画像のサイズを維持しつつフィット */
+  object-fit: cover; /* 画像のサイズを維持しつつフィット */
 }
 
 .card__body {
