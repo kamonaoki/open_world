@@ -30,6 +30,25 @@ class PostsController < ApplicationController
     end
   end
 
+  def latest
+    # 現在のユーザー以外の最新の投稿を取得
+    @latest_posts = Post.where.not(user_id: current_user.id).order(created_at: :desc).limit(10)
+    
+    # JSONに画像のURLを含める
+    render json: @latest_posts.map { |post| 
+      post_data = {
+        id: post.id,
+        title: post.title,
+        description: post.description,
+        latitude: post.latitude,
+        longitude: post.longitude
+      }
+      post_data[:image_url] = url_for(post.image) if post.image.attached?
+      post_data
+    }
+  end
+
+
   private
 
   # post_paramsメソッドは、許可された投稿パラメータを指定します。

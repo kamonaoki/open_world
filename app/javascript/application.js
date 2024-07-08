@@ -9,7 +9,7 @@ document.addEventListener('turbo:load', () => {
   if (document.getElementById('map')) {
     initMap();
   }
-  
+
   // フォームの閉じるボタンのイベントリスナーを追加
   document.querySelector('.close-form').addEventListener('click', function() {
     document.getElementById('form-container').style.display = 'none';
@@ -52,13 +52,32 @@ document.addEventListener('turbo:load', () => {
 
   form.removeEventListener('submit', formSubmitHandler); // 既存のイベントリスナーを削除
   form.addEventListener('submit', formSubmitHandler); // 新しいイベントリスナーを追加
+
+  // 最新の投稿を表示するボタンのクリックイベントリスナーを追加
+  const latestPostsButton = document.getElementById('show-latest-posts');
+  const latestPostsSection = document.getElementById('latest-posts-section');
+
+  latestPostsButton.addEventListener('click', function() {
+    // 最新の投稿セクションの表示/非表示を切り替え
+    if (latestPostsSection.style.display === 'none' || !latestPostsSection.style.display) {
+      fetch('/latest_posts')
+        .then(response => response.json())
+        .then(data => {
+          displayLatestPosts(data);
+          latestPostsSection.style.display = 'block'; // 表示
+        })
+        .catch(error => console.error('Error:', error));
+    } else {
+      latestPostsSection.style.display = 'none'; // 非表示
+    }
+  });
 });
 
+// 地図の初期化関連コード
 let currentMarker;
 let map;
 let markers = [];
 
-// 地図を初期化する関数
 function initMap() {
   // ユーザーの現在位置を取得
   if (navigator.geolocation) {
@@ -418,5 +437,44 @@ function showModal(imageUrl) {
 function isMarkerAtLocation(latLng) {
   return markers.some(marker => {
     return marker.getPosition() && marker.getPosition().equals(latLng);
+  });
+}
+
+// 最新の投稿を表示する関数
+function displayLatestPosts(posts) {
+  const latestPostsGrid = document.getElementById('latest-posts-grid');
+  latestPostsGrid.innerHTML = ''; // 現在の内容をクリア
+
+  posts.forEach(post => {
+    const cardWrapper = document.createElement('div');
+    cardWrapper.className = 'card__wrapper';
+
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    if (post.image_url) { // 画像URLが存在する場合にチェック
+      const img = document.createElement('img');
+      img.className = 'card__img';
+      img.src = post.image_url;
+      img.onclick = () => showModal(post.image_url);
+      card.appendChild(img);
+    }
+
+    const cardBody = document.createElement('div');
+    cardBody.className = 'card__body';
+
+    const title = document.createElement('h2');
+    title.className = 'card__title';
+    title.textContent = post.title;
+
+    const summary = document.createElement('p');
+    summary.className = 'card__summary';
+    summary.textContent = post.description;
+
+    cardBody.appendChild(title);
+    cardBody.appendChild(summary);
+    card.appendChild(cardBody);
+    cardWrapper.appendChild(card);
+    latestPostsGrid.appendChild(cardWrapper);
   });
 }

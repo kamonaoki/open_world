@@ -19,6 +19,7 @@
         <% if user_signed_in? %>
           <%= link_to "マイページ", "/users/#{current_user.id}" %>
           <%= link_to '写真の位置情報で投稿', new_post_path %>
+            <button id="show-latest-posts" class="btn btn-primary">みんなの投稿</button>
           <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete } %>
         <% else %>
           <%= link_to "ログイン", new_user_session_path, class: "post" %>
