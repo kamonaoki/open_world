@@ -461,6 +461,7 @@ function displayLatestPosts(posts) {
   posts.forEach(post => {
     const cardWrapper = document.createElement('div');
     cardWrapper.className = 'card__wrapper';
+    cardWrapper.onclick = () => moveToLocation(post.latitude, post.longitude); // カードをクリックすると地図が移動
 
     const card = document.createElement('div');
     card.className = 'card';
@@ -469,7 +470,10 @@ function displayLatestPosts(posts) {
       const img = document.createElement('img');
       img.className = 'card__img';
       img.src = post.image_url;
-      img.onclick = () => showModal(post.image_url);
+      img.onclick = (e) => {
+        e.stopPropagation(); // クリックイベントの伝播を停止
+        showModal(post.image_url);
+      };
       card.appendChild(img);
     }
 
@@ -490,6 +494,7 @@ function displayLatestPosts(posts) {
     const authorLink = document.createElement('a');
     authorLink.href = post.user_path;
     authorLink.textContent = post.user_name;
+    authorLink.onclick = (e) => e.stopPropagation(); // クリックイベントの伝播を停止
     author.appendChild(authorLink);
 
     cardBody.appendChild(title);
@@ -499,4 +504,11 @@ function displayLatestPosts(posts) {
     cardWrapper.appendChild(card);
     latestPostsGrid.appendChild(cardWrapper);
   });
+}
+
+// 投稿の場所に地図を移動する関数
+function moveToLocation(lat, lng) {
+  const location = new google.maps.LatLng(lat, lng);
+  map.panTo(location);
+  map.setZoom(15); // 必要に応じてズームレベルを調整
 }
