@@ -5,28 +5,38 @@
       <%= image_tag @user.avatar_url %>
     </div>
     <h2>Profile</h2>
+    <% if user_signed_in? && current_user == @user %>
+      <%= link_to 'Edit', edit_user_registration_path, class: 'edit-profile-link' %>
+    <% end %>
   </div>
   
-  <div class="profile-details">
-    <p><%= @user.profile %></p>
-  </div>
+  <div class="profile-content">
+    <div class="profile-details">
+      <p><%= @user.profile %></p>
+    </div>
 
-  <div class="uploaded-images">
-    <h2>Uploaded Images</h2>
-    <div class="images-grid">
-      <% @user.posts.each do |post| %>
-        <div class="card__wrapper">
-          <div class="card">
-            <% if post.image.attached? %>
-              <%= image_tag post.image, class: "card__img" %>
-            <% end %>
-            <div class="card__body">
-              <h2 class="card__title"><%= post.title %></h2>
-              <p class="card__summary"><%= post.description %></p>
+
+ <div class="separator"></div>
+    <div class="uploaded-images">
+      <h2>Uploaded Images</h2>
+      <div class="images-grid">
+        <% @user.posts.each do |post| %>
+          <div class="card__wrapper">
+            <div class="card">
+              <% if post.image.attached? %>
+                <%= image_tag post.image, class: "card__img" %>
+              <% end %>
+              <div class="card__body">
+                <h2 class= "card__title"><%= post.title %></h2>
+                <p class="card__summary"><%= post.description %></p>
+                <% if user_signed_in? && current_user == @user %>
+                  <%= link_to 'Edit', edit_post_path(post), class: 'edit-post-link' %>
+                <% end %>
+              </div>
             </div>
           </div>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
@@ -37,7 +47,8 @@
   <img class="modal-content" id="modal-image">
 </div>
 
- <script>// モーダルウィンドウの初期化
+<script>
+// モーダルウィンドウの初期化
 document.addEventListener('turbo:load', function() {
   const modal = document.getElementById('image-modal');
   const modalImg = document.getElementById('modal-image');

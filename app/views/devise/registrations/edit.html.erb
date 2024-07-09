@@ -1,31 +1,42 @@
-
+<div class="contents row">
+  <div class="container">
 <h2>Edit <%= resource_name.to_s.humanize %></h2>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, multipart: true }, html: { id: "avatar_form" }) do |f| %>
   <%= devise_error_messages! %>
 
   <div class="field">
-    <%= f.label :email %><br />
+        <%= f.label :名前 %><br />
+        <%= f.text_field :name, autofocus: true, placeholder: "名前を入力してください" %>
+      </div>
+
+  <div class="field">
+        <%= f.label :自己紹介 %><br />
+        <%= f.text_field :profile, placeholder: "自己紹介を入力してください" %>
+      </div>
+
+  <div class="field">
+    <%= f.label :メールアドレス %><br />
     <%= f.email_field :email, autofocus: true %>
   </div>
 
+<div class="field">
+    <%= f.label :current_password %> <i>(変更内容を確認するために現在のパスワードが必要です)</i><br />
+    <%= f.password_field :current_password, autocomplete: "current-password" %>
+  </div>
+
   <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
+    <%= f.label :変更後のパスワード %> <i>(変更しない場合は空白のままにしてください)</i><br />
     <%= f.password_field :password, autocomplete: "new-password" %>
   </div>
 
   <div class="field">
-    <%= f.label :password_confirmation %><br />
+    <%= f.label :パスワード（確認） %><br />
     <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
   </div>
 
   <div class="field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password, autocomplete: "current-password" %>
-  </div>
-  
-  <div class="field">
-    <%= f.label :avatar %><br />
+    <%= f.label :プロフィール画像 %><br />
     <%= f.file_field :avatar %>
   </div>
 <div id="avatar_previews"></div>
@@ -33,9 +44,5 @@
     <%= f.submit "Update" %>
   </div>
 <% end %>
-
-<h3>Cancel my account</h3>
-
-<%= button_to "Cancel my account", registration_path(resource_name), method: :delete, data: { confirm: "Are you sure?" } %>
-
-<%= link_to "Back", :back %>
+</div>
+</div>

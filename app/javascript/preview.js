@@ -19,7 +19,6 @@ document.addEventListener('turbo:load', function(){
     if (alreadyPreview) {
       alreadyPreview.remove();
     }
-    console.log("input要素で値の変化が起きました");
 
     // 選択されたファイルを取得
     const file = e.target.files[0];

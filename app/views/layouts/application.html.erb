@@ -1,31 +1,36 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>OpenWorld</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-    <link rel="stylesheet" href="./css/reset.css">
-    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP:400,700,900&display=swap" rel="stylesheet">
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
-    <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_MAPS_API_KEY']}&callback=initMap", async: true, defer: true %>
-  </head>
-
-  <body>
-     <div class="header">
+<head>
+  <title>OpenWorld</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <link rel="stylesheet" href="./css/reset.css">
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP:400,700,900&display=swap" rel="stylesheet">
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
+  <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_MAPS_API_KEY']}&callback=initMap", async: true, defer: true %>
+</head>
+<body>
+  <div class="header">
+    <div class="header-left">
       <h1><%= link_to 'Open World', root_path %></h1>
-    <nav>
-        <% if user_signed_in? %>
-          <%= link_to "マイページ", "/users/#{current_user.id}" %>
-          <%= link_to '写真の位置情報で投稿', new_post_path %>
-          <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete } %>
-        <% else %>
-          <%= link_to "ログイン", new_user_session_path, class: "post" %>
-          <%= link_to "新規登録", new_user_registration_path, class: "post" %>
-        <% end %>
-    </nav>
+      <div class="dropdown">
+        <button class="dropbtn">Menu</button>
+        <div class="dropdown-content">
+          <% if user_signed_in? %>
+           <%= link_to "ようこそ#{current_user.name}さん！", user_path(current_user) %>
+            <%= link_to "マイページ", user_path(current_user) %>
+            <%= link_to '写真の位置情報で投稿', new_post_path %>
+            <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete } %>
+          <% else %>
+            <%= link_to "ログイン", new_user_session_path %>
+            <%= link_to "新規登録", new_user_registration_path %>
+          <% end %>
+        </div>
+    </div>
+      </div>
   </div>
-    <%= yield %>
-  </body>
+  <%= yield %>
+</body>
 </html>

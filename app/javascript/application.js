@@ -9,7 +9,7 @@ document.addEventListener('turbo:load', () => {
   if (document.getElementById('map')) {
     initMap();
   }
-  
+
   // フォームの閉じるボタンのイベントリスナーを追加
   document.querySelector('.close-form').addEventListener('click', function() {
     document.getElementById('form-container').style.display = 'none';
@@ -52,13 +52,32 @@ document.addEventListener('turbo:load', () => {
 
   form.removeEventListener('submit', formSubmitHandler); // 既存のイベントリスナーを削除
   form.addEventListener('submit', formSubmitHandler); // 新しいイベントリスナーを追加
+
+  // 最新の投稿を表示するボタンのクリックイベントリスナーを追加
+  const latestPostsButton = document.getElementById('show-latest-posts');
+  const latestPostsSection = document.getElementById('latest-posts-section');
+
+  latestPostsButton.addEventListener('click', function() {
+    // 最新の投稿セクションの表示/非表示を切り替え
+    if (latestPostsSection.style.display === 'none' || !latestPostsSection.style.display) {
+      fetch('/latest_posts')
+        .then(response => response.json())
+        .then(data => {
+          displayLatestPosts(data);
+          latestPostsSection.style.display = 'block'; // 表示
+        })
+        .catch(error => console.error('Error:', error));
+    } else {
+      latestPostsSection.style.display = 'none'; // 非表示
+    }
+  });
 });
 
+// 地図の初期化関連コード
 let currentMarker;
 let map;
 let markers = [];
 
-// 地図を初期化する関数
 function initMap() {
   // ユーザーの現在位置を取得
   if (navigator.geolocation) {
@@ -365,19 +384,28 @@ function addMarker(post) {
 
 // カスタムインフォウィンドウを表示する関数
 function displayCustomInfoWindow(post) {
-  var image = new Image();
-  image.onload = () => {
-    var width = image.width;
-    var height = image.height;
-    var maxWidth = 300; // 表示する画像の最大幅
-    var ratio = width / height;
+  console.log(post); // postオブジェクトの内容を確認
+  const image = new Image(); // 画像オブジェクトを作成
 
+  image.onload = () => {
+    let width = image.width;
+    let height = image.height;
+    const maxWidth = 300; // 表示する画像の最大幅
+    const ratio = width / height;
+
+    // 画像の幅が最大幅を超える場合、リサイズ
     if (width > maxWidth) {
       width = maxWidth;
       height = maxWidth / ratio;
     }
 
-    var content = `<h3>${post.title}</h3><p>${post.description}</p><img id="custom-image" src="${post.image_url}" alt="${post.title}" style="width:${width}px;height:${height}px;cursor:pointer;"/>`;
+    // 投稿者の名前とそのリンクを追加
+    const content = `
+      <h3>${post.title}</h3>
+      <p>${post.description}</p>
+      <p><a href="${post.user_path}" target="_blank">投稿者：${post.user_name}</a></p>
+      <img id="custom-image" src="${post.image_url}" alt="${post.title}" style="width:${width}px;height:${height}px;cursor:pointer;"/>
+    `;
 
     document.getElementById('custom-infowindow-content').innerHTML = content;
     document.getElementById('custom-infowindow').style.display = 'block';
@@ -387,9 +415,13 @@ function displayCustomInfoWindow(post) {
       showModal(post.image_url);
     };
   };
+
+  // 画像読み込みエラー時の処理
   image.onerror = () => {
     console.error('Error loading image: ', post.image_url);
   };
+
+  // 画像のURLを設定
   image.src = post.image_url;
 }
 
@@ -419,4 +451,64 @@ function isMarkerAtLocation(latLng) {
   return markers.some(marker => {
     return marker.getPosition() && marker.getPosition().equals(latLng);
   });
+}
+
+// 最新の投稿を表示する関数
+function displayLatestPosts(posts) {
+  const latestPostsGrid = document.getElementById('latest-posts-grid');
+  latestPostsGrid.innerHTML = ''; // 現在の内容をクリア
+
+  posts.forEach(post => {
+    const cardWrapper = document.createElement('div');
+    cardWrapper.className = 'card__wrapper';
+    cardWrapper.onclick = () => moveToLocation(post.latitude, post.longitude); // カードをクリックすると地図が移動
+
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    if (post.image_url) { // 画像URLが存在する場合にチェック
+      const img = document.createElement('img');
+      img.className = 'card__img';
+      img.src = post.image_url;
+      img.onclick = (e) => {
+        e.stopPropagation(); // クリックイベントの伝播を停止
+        showModal(post.image_url);
+      };
+      card.appendChild(img);
+    }
+
+    const cardBody = document.createElement('div');
+    cardBody.className = 'card__body';
+
+    const title = document.createElement('h2');
+    title.className = 'card__title';
+    title.textContent = post.title;
+
+    const summary = document.createElement('p');
+    summary.className = 'card__summary';
+    summary.textContent = post.description;
+
+    // 投稿者の名前とリンクを追加
+    const author = document.createElement('p');
+    author.className = 'card__author';
+    const authorLink = document.createElement('a');
+    authorLink.href = post.user_path;
+    authorLink.textContent = post.user_name;
+    authorLink.onclick = (e) => e.stopPropagation(); // クリックイベントの伝播を停止
+    author.appendChild(authorLink);
+
+    cardBody.appendChild(title);
+    cardBody.appendChild(summary);
+    cardBody.appendChild(author); // 投稿者の情報を追加
+    card.appendChild(cardBody);
+    cardWrapper.appendChild(card);
+    latestPostsGrid.appendChild(cardWrapper);
+  });
+}
+
+// 投稿の場所に地図を移動する関数
+function moveToLocation(lat, lng) {
+  const location = new google.maps.LatLng(lat, lng);
+  map.panTo(location);
+  map.setZoom(15); // 必要に応じてズームレベルを調整
 }
