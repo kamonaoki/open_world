@@ -1,6 +1,8 @@
 <!-- Googleマップ -->
-<div id="map" style="height: 100vh; width: 100%;"></div>
-
+  <div class="map-container">
+    <button id="show-latest-posts" class="btn btn-primary">みんなの投稿</button>
+    <div id="map"></div>
+  </div>
 <!-- 投稿フォーム -->
 <div id="form-container" style="display: none;">
      <span class="close-form">&times;</span>
@@ -14,7 +16,7 @@
     </div>
 
     <div class="field">
-      <%= form.label :どんな場所になった？ %>
+      <%= form.label :説明 %>
       <%= form.text_area :description %>
     </div>
    
@@ -41,7 +43,7 @@
 
 <!-- 最新の投稿表示用のセクション -->
 <div id="latest-posts-section">
-  <h2>最新の投稿</h2> <!-- セクションタイトルを追加 -->
+  <h2>みんなの投稿</h2> <!-- セクションタイトルを追加 -->
   <div class="images-grid" id="latest-posts-grid"></div>
 </div>
 

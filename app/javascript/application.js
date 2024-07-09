@@ -384,19 +384,28 @@ function addMarker(post) {
 
 // カスタムインフォウィンドウを表示する関数
 function displayCustomInfoWindow(post) {
-  var image = new Image();
-  image.onload = () => {
-    var width = image.width;
-    var height = image.height;
-    var maxWidth = 300; // 表示する画像の最大幅
-    var ratio = width / height;
+  console.log(post); // postオブジェクトの内容を確認
+  const image = new Image(); // 画像オブジェクトを作成
 
+  image.onload = () => {
+    let width = image.width;
+    let height = image.height;
+    const maxWidth = 300; // 表示する画像の最大幅
+    const ratio = width / height;
+
+    // 画像の幅が最大幅を超える場合、リサイズ
     if (width > maxWidth) {
       width = maxWidth;
       height = maxWidth / ratio;
     }
 
-    var content = `<h3>${post.title}</h3><p>${post.description}</p><img id="custom-image" src="${post.image_url}" alt="${post.title}" style="width:${width}px;height:${height}px;cursor:pointer;"/>`;
+    // 投稿者の名前とそのリンクを追加
+    const content = `
+      <h3>${post.title}</h3>
+      <p>${post.description}</p>
+      <p><a href="${post.user_path}" target="_blank">投稿者：${post.user_name}</a></p>
+      <img id="custom-image" src="${post.image_url}" alt="${post.title}" style="width:${width}px;height:${height}px;cursor:pointer;"/>
+    `;
 
     document.getElementById('custom-infowindow-content').innerHTML = content;
     document.getElementById('custom-infowindow').style.display = 'block';
@@ -406,9 +415,13 @@ function displayCustomInfoWindow(post) {
       showModal(post.image_url);
     };
   };
+
+  // 画像読み込みエラー時の処理
   image.onerror = () => {
     console.error('Error loading image: ', post.image_url);
   };
+
+  // 画像のURLを設定
   image.src = post.image_url;
 }
 
@@ -471,8 +484,17 @@ function displayLatestPosts(posts) {
     summary.className = 'card__summary';
     summary.textContent = post.description;
 
+    // 投稿者の名前とリンクを追加
+    const author = document.createElement('p');
+    author.className = 'card__author';
+    const authorLink = document.createElement('a');
+    authorLink.href = post.user_path;
+    authorLink.textContent = post.user_name;
+    author.appendChild(authorLink);
+
     cardBody.appendChild(title);
     cardBody.appendChild(summary);
+    cardBody.appendChild(author); // 投稿者の情報を追加
     card.appendChild(cardBody);
     cardWrapper.appendChild(card);
     latestPostsGrid.appendChild(cardWrapper);

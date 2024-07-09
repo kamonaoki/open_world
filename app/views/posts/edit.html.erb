@@ -1,0 +1,28 @@
+<div class="form-container">
+  <h3>画像の位置情報を使って投稿</h3>
+
+<%= form_with(model: @post, local: true, id: "post-form") do |form| %>
+  <div class="field">
+    <%= form.label :タイトル %>
+    <%= form.text_field :title %>
+  </div>
+  <div class="field">
+    <%= form.label :説明 %>
+    <%= form.text_area :description %>
+  </div>
+  <div class="field">
+    <%= form.hidden_field :latitude, id: "post_latitude" %>
+    <%= form.hidden_field :longitude, id: "post_longitude" %>
+  </div>
+  <div class="field">
+    <%= form.label :画像（位置情報は変わりません） %>
+    <%= form.file_field :image, id: "image-upload" %>
+  </div>
+  <div id="image-preview-container" style="display:none;">
+    <img id="image-preview" src="#" alt="Image preview" style="max-width: 100%; height: auto;">
+  </div>
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+</div>
