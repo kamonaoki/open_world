@@ -212,6 +212,7 @@ body {
   border-radius: 5px;
   cursor: pointer;
   width: 150px;
+  font-weight: bold;
 }
 
 #map-controls .btn:hover {
@@ -398,8 +399,6 @@ h3 {
 .actions input[type="submit"]:hover {
   background-color: #87CEFA; /* さらに濃い水色 */
 }
-
-
 
 form input,
 form textarea {
