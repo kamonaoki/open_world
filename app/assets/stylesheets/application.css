@@ -166,6 +166,58 @@ body {
   }
 }
 
+#map-controls {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  z-index: 1; /* マップの上に表示 */
+}
+
+#map-controls .btn {
+  display: block;
+  margin-bottom: 10px;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#map-controls .btn:hover {
+  background-color: #0056b3;
+}
+
+.btn.kirikae {
+  display: flex;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 5; /* 地図の上に表示 */
+}
+#map-controls {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  z-index: 1; /* マップの上に表示 */
+}
+
+#map-controls .btn {
+  display: block;
+  margin-bottom: 10px;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 150px;
+}
+
+#map-controls .btn:hover {
+  background-color: #0056b3;
+}
+
 /* フォームのスタイル */
 
 #form-container {
