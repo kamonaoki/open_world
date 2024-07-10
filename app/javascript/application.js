@@ -3,11 +3,14 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import "preview"
 
-// ドキュメントがロードされたときに実行するイベントリスナーを追加
+// ページが読み込まれたときに実行するイベントリスナーを追加
 document.addEventListener('turbo:load', () => {
+  // 現在のユーザーIDを取得
+  const currentUserId = document.body.dataset.userId;
+
   // マップの要素が存在する場合に地図を初期化
   if (document.getElementById('map')) {
-    initMap();
+    initMap(currentUserId);
   }
 
   // フォームの閉じるボタンのイベントリスナーを追加
@@ -23,7 +26,7 @@ document.addEventListener('turbo:load', () => {
   // フォームの送信イベントリスナーを追加
   const form = document.querySelector('form');
 
-  // イベントリスナー用の関数を定義
+  // フォーム送信のイベントハンドラ
   function formSubmitHandler(event) {
     event.preventDefault(); // デフォルトのフォーム送信を防ぐ
 
@@ -43,8 +46,7 @@ document.addEventListener('turbo:load', () => {
         document.getElementById('form-container').style.display = 'none'; // フォームを非表示
         window.location.href = data.redirect_url; // 成功したらリダイレクト
       } else {
-        // エラーハンドリング
-        alert('Error: ' + data.errors.join(', '));
+        alert('Error: ' + data.errors.join(', ')); // エラーメッセージを表示
       }
     })
     .catch(error => console.error('Error:', error)); // エラーハンドリング
@@ -53,12 +55,27 @@ document.addEventListener('turbo:load', () => {
   form.removeEventListener('submit', formSubmitHandler); // 既存のイベントリスナーを削除
   form.addEventListener('submit', formSubmitHandler); // 新しいイベントリスナーを追加
 
+  // 投稿表示切り替えボタンのクリックイベントリスナーを追加
+  const togglePostsButton = document.getElementById('toggle-posts');
+
+  // 初期状態を「自分の投稿のみ表示」に設定
+  let showingAllPosts = false;
+
+  togglePostsButton.addEventListener('click', function() {
+    if (showingAllPosts) {
+      filterMarkers(allPosts, 'user', currentUserId); // 自分の投稿を表示
+    } else {
+      filterMarkers(allPosts, 'all', currentUserId); // すべての投稿を表示
+    }
+    togglePostsButton.textContent = showingAllPosts ? 'みんなの投稿を表示' : '自分の投稿のみ表示'; // ボタンのテキストを切り替え
+    showingAllPosts = !showingAllPosts; // 状態を反転
+  });
+
   // 最新の投稿を表示するボタンのクリックイベントリスナーを追加
   const latestPostsButton = document.getElementById('show-latest-posts');
   const latestPostsSection = document.getElementById('latest-posts-section');
 
   latestPostsButton.addEventListener('click', function() {
-    // 最新の投稿セクションの表示/非表示を切り替え
     if (latestPostsSection.style.display === 'none' || !latestPostsSection.style.display) {
       fetch('/latest_posts')
         .then(response => response.json())
@@ -77,9 +94,10 @@ document.addEventListener('turbo:load', () => {
 let currentMarker;
 let map;
 let markers = [];
+let allPosts = [];
 
-function initMap() {
-  // ユーザーの現在位置を取得
+// 地図を初期化する関数
+function initMap(currentUserId) {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(position => {
       const userLocation = {
@@ -87,7 +105,7 @@ function initMap() {
         lng: position.coords.longitude
       };
 
-      // 緑豊かなマップスタイルを設定
+      // 地図のスタイルを設定
       const mapStyle = [
         {
           "elementType": "geometry",
@@ -263,7 +281,6 @@ function initMap() {
         styles: mapStyle
       });
 
-      // ユーザーの現在位置を示すカスタムアイコンを設定
       const userLocationIcon = {
         path: google.maps.SymbolPath.CIRCLE,
         scale: 10,
@@ -278,14 +295,7 @@ function initMap() {
         position: userLocation,
         map: map,
         title: '今、ここにいるよ',
-        icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 10,
-          fillColor: '#0000FF', // 青色
-          fillOpacity: 1,
-          strokeColor: '#FFFFFF',
-          strokeWeight: 2
-        }
+        icon: userLocationIcon
       });
 
       // 地図上をクリックしたときにマーカーを置き、地図をその位置にパン
@@ -296,13 +306,12 @@ function initMap() {
         }
       });
 
-      // サーバーから投稿データを取得し、マーカーを追加
+      // サーバーから投稿データを取得し、自分の投稿のみ表示
       fetch('/posts.json')
         .then(response => response.json())
         .then(data => {
-          data.forEach(post => {
-            addMarker(post);
-          });
+          allPosts = data;
+          filterMarkers(data, 'user', currentUserId); // 自分の投稿のみ表示
         });
     }, () => {
       handleLocationError(true, map.getCenter());
@@ -341,50 +350,58 @@ function placeMarkerAndPanTo(latLng, map) {
 }
 
 // 投稿データからマーカーを追加する関数
-function addMarker(post) {
-  var image = new Image();
-  image.onload = () => {
-    var width = image.width;
-    var height = image.height;
-    var maxSize = 50; // 最大サイズを設定
+function addMarkers(posts) {
+  clearMarkers(); // 既存のマーカーをクリア
+  posts.forEach(post => {
+    var image = new Image();
+    image.onload = () => {
+      var width = image.width;
+      var height = image.height;
+      var maxSize = 50; // 最大サイズを設定
 
-    if (width > height) {
-      var ratio = maxSize / width;
-      width = maxSize;
-      height = height * ratio;
-    } else {
-      var ratio = maxSize / height;
-      height = maxSize;
-      width = width * ratio;
-    }
-
-    // マーカーを作成し、地図に追加
-    var marker = new google.maps.Marker({
-      position: {lat: post.latitude, lng: post.longitude},
-      map: map,
-      title: post.title,
-      icon: {
-        url: post.image_url,
-        scaledSize: new google.maps.Size(width, height)
+      if (width > height) {
+        var ratio = maxSize / width;
+        width = maxSize;
+        height = height * ratio;
+      } else {
+        var ratio = maxSize / height;
+        height = maxSize;
+        width = width * ratio;
       }
-    });
 
-    markers.push(marker);
+      // マーカーを作成し、地図に追加
+      var marker = new google.maps.Marker({
+        position: {lat: post.latitude, lng: post.longitude},
+        map: map,
+        title: post.title,
+        icon: {
+          url: post.image_url,
+          scaledSize: new google.maps.Size(width, height)
+        }
+      });
 
-    // マーカーをクリックしたときにカスタムインフォウィンドウを表示
-    marker.addListener('click', () => {
-      displayCustomInfoWindow(post);
-    });
-  };
-  image.onerror = () => {
-    console.error('Error loading image: ', post.image_url);
-  };
-  image.src = post.image_url;
+      markers.push(marker);
+
+      // マーカーをクリックしたときにカスタムインフォウィンドウを表示
+      marker.addListener('click', () => {
+        displayCustomInfoWindow(post);
+      });
+    };
+    image.onerror = () => {
+      console.error('Error loading image: ', post.image_url);
+    };
+    image.src = post.image_url;
+  });
+}
+
+// 既存のマーカーをクリアする関数
+function clearMarkers() {
+  markers.forEach(marker => marker.setMap(null));
+  markers = [];
 }
 
 // カスタムインフォウィンドウを表示する関数
 function displayCustomInfoWindow(post) {
-  console.log(post); // postオブジェクトの内容を確認
   const image = new Image(); // 画像オブジェクトを作成
 
   image.onload = () => {
@@ -446,13 +463,6 @@ function showModal(imageUrl) {
   };
 }
 
-// 指定した位置にマーカーがあるかどうかをチェックする関数
-function isMarkerAtLocation(latLng) {
-  return markers.some(marker => {
-    return marker.getPosition() && marker.getPosition().equals(latLng);
-  });
-}
-
 // 最新の投稿を表示する関数
 function displayLatestPosts(posts) {
   const latestPostsGrid = document.getElementById('latest-posts-grid');
@@ -511,4 +521,20 @@ function moveToLocation(lat, lng) {
   const location = new google.maps.LatLng(lat, lng);
   map.panTo(location);
   map.setZoom(15); // 必要に応じてズームレベルを調整
+}
+
+// 指定した位置にマーカーがあるかどうかをチェックする関数
+function isMarkerAtLocation(latLng) {
+  return markers.some(marker => {
+    return marker.getPosition() && marker.getPosition().equals(latLng);
+  });
+}
+
+// 投稿データをフィルタリングしてマーカーを追加する関数
+function filterMarkers(posts, filter, currentUserId) {
+  let filteredPosts = posts;
+  if (filter === 'user') {
+    filteredPosts = posts.filter(post => post.user_id == currentUserId); // ユーザーの投稿をフィルタリング
+  }
+  addMarkers(filteredPosts);
 }
