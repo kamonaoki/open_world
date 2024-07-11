@@ -41,6 +41,8 @@ document.addEventListener('turbo:load', () => {
     .then(response => response.json()) // レスポンスをJSONとしてパース
     .then(data => {
       if (data.status === 'success') {
+        // 新しい投稿をallPostsに追加
+        allPosts.push(data.post);
         addMarker(data.post); // 新しいマーカーを追加
         form.reset(); // フォームをリセット
         document.getElementById('form-container').style.display = 'none'; // フォームを非表示
@@ -537,4 +539,46 @@ function filterMarkers(posts, filter, currentUserId) {
     filteredPosts = posts.filter(post => post.user_id == currentUserId); // ユーザーの投稿をフィルタリング
   }
   addMarkers(filteredPosts);
+}
+
+// 新しい投稿をマップに追加する関数
+function addMarker(post) {
+  var image = new Image();
+  image.onload = () => {
+    var width = image.width;
+    var height = image.height;
+    var maxSize = 50; // 最大サイズを設定
+
+    if (width > height) {
+      var ratio = maxSize / width;
+      width = maxSize;
+      height = height * ratio;
+    } else {
+      var ratio = maxSize / height;
+      height = maxSize;
+      width = width * ratio;
+    }
+
+    // マーカーを作成し、地図に追加
+    var marker = new google.maps.Marker({
+      position: {lat: post.latitude, lng: post.longitude},
+      map: map,
+      title: post.title,
+      icon: {
+        url: post.image_url,
+        scaledSize: new google.maps.Size(width, height)
+      }
+    });
+
+    markers.push(marker);
+
+    // マーカーをクリックしたときにカスタムインフォウィンドウを表示
+    marker.addListener('click', () => {
+      displayCustomInfoWindow(post);
+    });
+  };
+  image.onerror = () => {
+    console.error('Error loading image: ', post.image_url);
+  };
+  image.src = post.image_url;
 }
