@@ -44,20 +44,26 @@ Open_world(仮)
 ・コメント機能
 ・検索機能
 ・写真複数枚投稿機能
+・公開したくない写真は別データベースに保存できるように
 
-# データベース設計	ER図を添付。
+# データベース設計
 [![Image from Gyazo](https://i.gyazo.com/9bb2b89861e5f7b248f9e505a661976f.png)](https://gyazo.com/9bb2b89861e5f7b248f9e505a661976f)
 
-# 画面遷移図	画面遷移図を添付。
+# 画面遷移図
 [![Image from Gyazo](https://i.gyazo.com/c4192dc5cb037c520a7f52050feaac30.png)](https://gyazo.com/c4192dc5cb037c520a7f52050feaac30)
 
 # 開発環境
-フロントエンド　javascript HTML CSS
+フロントエンドJavascript HTML CSS
+
 バックエンド　Ruby Ruby on Rails
+
 インフラ
-テスト
+
+テスト　Rspec
+
 テキストエディタ　VSCode
-タスク管理
+
+タスク管理 Github
 
 # ローカルでの動作方法	
 git cloneしてから、ローカルで動作をさせるまでに必要なコマンドを記載。
