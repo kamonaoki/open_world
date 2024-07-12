@@ -30,7 +30,7 @@ document.addEventListener('turbo:load', () => {
   function formSubmitHandler(event) {
     event.preventDefault(); // デフォルトのフォーム送信を防ぐ
 
-    var formData = new FormData(form); // フォームデータを作成
+    const formData = new FormData(form); // フォームデータを作成
     fetch(form.action, {
       method: 'POST',
       body: formData,
@@ -341,13 +341,13 @@ function placeMarkerAndPanTo(latLng, map) {
   map.panTo(latLng);
 
   // フォームの緯度経度フィールドに値を設定
-  var latitudeField = document.getElementById('post_latitude');
-  var longitudeField = document.getElementById('post_longitude');
+  const latitudeField = document.getElementById('post_latitude');
+  const longitudeField = document.getElementById('post_longitude');
   latitudeField.value = latLng.lat();
   longitudeField.value = latLng.lng();
 
   // フォームコンテナを表示
-  var formContainer = document.getElementById('form-container');
+  const formContainer = document.getElementById('form-container');
   formContainer.style.display = 'block';
 }
 
@@ -355,24 +355,24 @@ function placeMarkerAndPanTo(latLng, map) {
 function addMarkers(posts) {
   clearMarkers(); // 既存のマーカーをクリア
   posts.forEach(post => {
-    var image = new Image();
+    const image = new Image();
     image.onload = () => {
-      var width = image.width;
-      var height = image.height;
-      var maxSize = 50; // 最大サイズを設定
+      let width = image.width;
+      let height = image.height;
+      const maxSize = 50; // 最大サイズを設定
 
       if (width > height) {
-        var ratio = maxSize / width;
+        const ratio = maxSize / width;
         width = maxSize;
         height = height * ratio;
       } else {
-        var ratio = maxSize / height;
+        const ratio = maxSize / height;
         height = maxSize;
         width = width * ratio;
       }
 
       // マーカーを作成し、地図に追加
-      var marker = new google.maps.Marker({
+      const marker = new google.maps.Marker({
         position: {lat: post.latitude, lng: post.longitude},
         map: map,
         title: post.title,
@@ -446,9 +446,9 @@ function displayCustomInfoWindow(post) {
 
 // 画像をモーダルで表示する関数
 function showModal(imageUrl) {
-  var modal = document.getElementById('image-modal');
-  var modalImg = document.getElementById('modal-image');
-  var closeModal = document.getElementById('close-modal');
+  const modal = document.getElementById('image-modal');
+  const modalImg = document.getElementById('modal-image');
+  const closeModal = document.getElementById('close-modal');
 
   modal.style.display = "block";
   modalImg.src = imageUrl;
@@ -543,24 +543,24 @@ function filterMarkers(posts, filter, currentUserId) {
 
 // 新しい投稿をマップに追加する関数
 function addMarker(post) {
-  var image = new Image();
+  const image = new Image();
   image.onload = () => {
-    var width = image.width;
-    var height = image.height;
-    var maxSize = 50; // 最大サイズを設定
+    let width = image.width;
+    let height = image.height;
+    const maxSize = 50; // 最大サイズを設定
 
     if (width > height) {
-      var ratio = maxSize / width;
+      const ratio = maxSize / width;
       width = maxSize;
       height = height * ratio;
     } else {
-      var ratio = maxSize / height;
+      const ratio = maxSize / height;
       height = maxSize;
       width = width * ratio;
     }
 
     // マーカーを作成し、地図に追加
-    var marker = new google.maps.Marker({
+    const marker = new google.maps.Marker({
       position: {lat: post.latitude, lng: post.longitude},
       map: map,
       title: post.title,
