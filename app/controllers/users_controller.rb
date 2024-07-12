@@ -1,12 +1,13 @@
 class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
+    @posts = @user.posts.order('created_at DESC')
   end
 
   def update
     @user = User.find(params[:id])
     if @user.update(user_params)
-      redirect_to user_path（carrent_user）, notice: 'Profile was successfully updated.'
+      redirect_to user_path（current_user）, notice: 'Profile was successfully updated.'
     else
       render :edit
     end

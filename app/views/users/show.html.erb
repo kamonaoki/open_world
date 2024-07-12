@@ -20,7 +20,7 @@
     <div class="uploaded-images">
       <h2>Uploaded Images</h2>
       <div class="images-grid">
-        <% @user.posts.each do |post| %>
+        <% @posts.each do |post| %>
           <div class="card__wrapper">
             <div class="card">
               <% if post.image.attached? %>
