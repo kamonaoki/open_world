@@ -37,10 +37,10 @@ https://open-world.onrender.com/
 [![Image from Gyazo](https://i.gyazo.com/d2499e801796ec3a539c72bfc609be34.jpg)](https://gyazo.com/d2499e801796ec3a539c72bfc609be34)
 
 ・投稿閲覧機能
-[![Image from Gyazo](https://i.gyazo.com/2353feb12750ef158e4b19f608ab95f0.gif)](https://gyazo.com/2353feb12750ef158e4b19f608ab95f0.gif)
+[![Image from Gyazo](https://i.gyazo.com/a0b22d20b7c2984fd803dfcd94dbc876.gif)](https://gyazo.com/a0b22d20b7c2984fd803dfcd94dbc876)
 
 ・みんなの新規投稿表示機能
-[![Image from Gyazo](https://i.gyazo.com/c829c9746b5ede6d740f0a4920fe28a2.gif)](https://gyazo.com/c829c9746b5ede6d740f0a4920fe28a2.gif)
+[![Image from Gyazo](https://i.gyazo.com/6f927e1ce8332f2d8d1126a99feb1849.gif)](https://gyazo.com/6f927e1ce8332f2d8d1126a99feb1849)
 
 
 # 実装予定の機能	
