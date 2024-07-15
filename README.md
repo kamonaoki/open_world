@@ -37,16 +37,17 @@ https://open-world.onrender.com/
 [![Image from Gyazo](https://i.gyazo.com/d2499e801796ec3a539c72bfc609be34.jpg)](https://gyazo.com/d2499e801796ec3a539c72bfc609be34)
 
 ・投稿閲覧機能
-[![Image from Gyazo](https://i.gyazo.com/2353feb12750ef158e4b19f608ab95f0.gif)](https://gyazo.com/2353feb12750ef158e4b19f608ab95f0)
+[![Image from Gyazo](https://i.gyazo.com/2353feb12750ef158e4b19f608ab95f0.gif)](https://gyazo.com/2353feb12750ef158e4b19f608ab95f0.gif)
 
 ・みんなの新規投稿表示機能
-[![Image from Gyazo](https://i.gyazo.com/c829c9746b5ede6d740f0a4920fe28a2.gif)](https://gyazo.com/c829c9746b5ede6d740f0a4920fe28a2)
+[![Image from Gyazo](https://i.gyazo.com/c829c9746b5ede6d740f0a4920fe28a2.gif)](https://gyazo.com/c829c9746b5ede6d740f0a4920fe28a2.gif)
 
 
 # 実装予定の機能	
 ・ユーザーのフォロー機能、
 
 　また、フォローしているユーザーのみ地図に表示する機能
+
 ・地図に表示した写真のピンに装飾
 
 ・いいね機能
@@ -81,14 +82,12 @@ https://open-world.onrender.com/
 # 工夫したポイント	
 自分でも使いたくなる欲しくなるアプリを目指した。
 
-そのためにはJavascriptを最大限使う必要があったので、
-独学で学んで実装した。
+そのためにはJavascriptを最大限使う必要があったので、独学で学んで実装した。
 
 # 改善点
 文字ではなく、記号や絵で直感的に使えるUI作成を行いたい。
 
-コードの整理がうまくできておらず、リファクタリングをしにくい構造に
-なってしまっている。そこまで考えられるようになりたい。
+コードの整理がうまくできておらず、リファクタリングをしにくい構造になってしまっている。そこまで考えられるようになりたい。
 
 # 制作時間
 ２週間
