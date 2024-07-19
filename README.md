@@ -23,8 +23,7 @@ https://open-world.onrender.com/
 ・地図左下の「みんなの写真も表示」をクリックすると、他のユーザーの写真も地図に表示される。
 
 ・「みんなの新規投稿」をクリックすると、他のユーザーの投稿が新しい順に表示される。
-
-・「みんなの新規投稿」の写真部分をクリックすると写真を元の大きさで表示する。投稿の空白部分をクリックすると、その投稿がされている場所へ地図が移動する。
+・「みんなの新規投稿」の写真部分をクリックすると写真を元の大きさで表示する。投稿の空白部分をクリックすると、その投稿がされている場所へ地図が移動する。ユーザー名をクリックするとそのユーザーのマイページへ移動する。
 
 # アプリケーションを作成した背景
 このアプリの着想は、最近のオープンワールド風ゲームから得ました。思い出や好きな場所などを地図上に可視化することで、ユーザーが「自分の居場所やまだよく知らない場所を認識できるようにしたかったからです。また、他のユーザーの投稿を参考にして、自分の地図を広げていけるようにすることを目指しました。
@@ -36,11 +35,9 @@ https://open-world.onrender.com/
 ・投稿機能
 [![Image from Gyazo](https://i.gyazo.com/d2499e801796ec3a539c72bfc609be34.jpg)](https://gyazo.com/d2499e801796ec3a539c72bfc609be34)
 
-・投稿閲覧機能
-[![Image from Gyazo](https://i.gyazo.com/a0b22d20b7c2984fd803dfcd94dbc876.gif)](https://gyazo.com/a0b22d20b7c2984fd803dfcd94dbc876)
-
 ・みんなの新規投稿表示機能
-[![Image from Gyazo](https://i.gyazo.com/6f927e1ce8332f2d8d1126a99feb1849.gif)](https://gyazo.com/6f927e1ce8332f2d8d1126a99feb1849)
+[![Image from Gyazo](https://i.gyazo.com/db335a5e38086bbedb32741fc4fa7da8.jpg)](https://gyazo.com/db335a5e38086bbedb32741fc4fa7da8)
+
 
 
 # 実装予定の機能	
