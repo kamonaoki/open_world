@@ -5,7 +5,7 @@ class Post < ApplicationRecord
   validates :latitude, presence: true
   validates :longitude, presence: true
   
-
+  has_many :comments
   has_one_attached :image
   geocoded_by :address
   after_validation :geocode, if: :address_changed?

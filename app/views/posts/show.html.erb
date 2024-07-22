@@ -1,0 +1,47 @@
+<h2><%= @post.title %></h2>
+
+<p>投稿者: <%= @post.user.name %></p>
+
+<% if @post.image.attached? %>
+  <div class="post-image">
+    <%= image_tag @post.image %>
+  </div>
+<% end %>
+
+<p><%= @post.description %></p>
+
+<div id="post-map" style="height: 300px; width: 100%;"></div>
+
+<h2>Comments</h2>
+<div class="comments">
+  <%= render @comments %>
+</div>
+
+<div class="new-comment">
+  <%= form_with(model: [@post, @comment], local: true) do |form| %>
+    <div class="field">
+      <%= form.label :content %><br>
+      <%= form.text_area :content %>
+    </div>
+    <div class="actions">
+      <%= form.submit "Add Comment" %>
+    </div>
+  <% end %>
+</div>
+
+<script>
+  function initPostMap() {
+    const postLocation = { lat: <%= @post.latitude %>, lng: <%= @post.longitude %> };
+    const map = new google.maps.Map(document.getElementById('post-map'), {
+      zoom: 14,
+      center: postLocation
+    });
+    const marker = new google.maps.Marker({
+      position: postLocation,
+      map: map
+    });
+  }
+
+  document.addEventListener('turbo:load', initPostMap);
+</script>
+<%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_MAPS_API_KEY']}&callback=initPostMap", async: true, defer: true %>
