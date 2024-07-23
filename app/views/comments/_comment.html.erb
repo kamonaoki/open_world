@@ -1,0 +1,6 @@
+<div class="comment">
+  <p><strong><%= comment.user.name %>:</strong> <%= comment.text %></p>
+  <% if comment.user == current_user %>
+    <%= link_to 'delete', post_comment_path(comment.post, comment), data: { turbo_method: :delete, confirm: '本当に削除しますか？' } %>
+  <% end %>
+</div>

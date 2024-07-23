@@ -13,14 +13,19 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    @comment = Comment.find(params[:id])
-    @comment.destroy
-    redirect_to @comment.post, notice: 'Comment was successfully destroyed.'
+    @post = Post.find(params[:post_id])
+    @comment = @post.comments.find(params[:id])
+    if @comment.user == current_user
+      @comment.destroy
+      redirect_to @post, notice: 'コメントが削除されました。'
+    else
+      redirect_to @post, alert: 'コメントの削除に失敗しました。'
+    end
   end
 
   private
 
   def comment_params
-    params.require(:comment).permit(:content)
+    params.require(:comment).permit(:text)
   end
 end

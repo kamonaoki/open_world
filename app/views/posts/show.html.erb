@@ -1,32 +1,32 @@
-<h2><%= @post.title %></h2>
+<div class="container post-detail">
+  <h2><%= @post.title %></h2>
+  <p>投稿者: <%= @post.user.name %></p>
 
-<p>投稿者: <%= @post.user.name %></p>
-
-<% if @post.image.attached? %>
-  <div class="post-image">
-    <%= image_tag @post.image %>
-  </div>
-<% end %>
-
-<p><%= @post.description %></p>
-
-<div id="show-map" style="height: 300px; width: 100%;"></div>
-
-<h2>Comments</h2>
-<div class="comments">
-  <%= render @comments %>
-</div>
-
-<div class="new-comment">
-  <%= form_with(model: [@post, @comment], local: true) do |form| %>
-    <div class="field">
-      <%= form.label :content %><br>
-      <%= form.text_area :content %>
-    </div>
-    <div class="actions">
-      <%= form.submit "Add Comment" %>
+  <% if @post.image.attached? %>
+    <div class="post-image">
+      <%= image_tag @post.image %>
     </div>
   <% end %>
+
+  <p><%= @post.description %></p>
+
+  <div id="show-map"></div>
+
+  <h2>Comments</h2>
+  <div class="comments">
+    <%= render @comments %>
+  </div>
+
+  <div class="new-comment">
+    <%= form_with(model: [@post, @comment], local: true) do |form| %>
+      <div class="field">
+        <%= form.text_area :text,placeholder: "コメントを入力してください", class: "form-control" %>
+      </div>
+      <div class="actions">
+        <%= form.submit "Add Comment" %>
+      </div>
+    <% end %>
+  </div>
 </div>
 
 <script>
