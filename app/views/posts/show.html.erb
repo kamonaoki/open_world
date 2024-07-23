@@ -1,47 +1,41 @@
-<div class="container post-detail">
-  <h2><%= @post.title %></h2>
-  <p>投稿者: <%= @post.user.name %></p>
-
-  <% if @post.image.attached? %>
-    <div class="post-image">
-      <%= image_tag @post.image %>
+ <div class="post-detail-container">
+    <div class="post-header">
+      <h1 class="post-title"><%= @post.title %></h1>
+      <p class="post-author">Posted by <%= @post.user.name %></p>
     </div>
-  <% end %>
-
-  <p><%= @post.description %></p>
-
-  <div id="show-map"></div>
-
-  <h2>Comments</h2>
-  <div class="comments">
-    <%= render @comments %>
-  </div>
-
-  <div class="new-comment">
-    <%= form_with(model: [@post, @comment], local: true) do |form| %>
-      <div class="field">
-        <%= form.text_area :text,placeholder: "コメントを入力してください", class: "form-control" %>
+    <div class="post-image">
+      <%= image_tag @post.image if @post.image.attached? %>
+    </div>
+    <div class="post-content">
+      <p><%= @post.description %></p>
+    </div>
+    <div id="show-map" class="post-map"></div>
+    <div class="comments-section">
+      <h2>Comments</h2>
+      <div class="comments">
+        <%= render @comments %>
       </div>
-      <div class="actions">
-        <%= form.submit "Add Comment" %>
+      <div class="new-comment">
+        <%= form_with(model: [@post, @comment], local: true) do |form| %>
+          <div class="form-group">
+            <%= form.text_area :text, placeholder: "コメントを入力してください", class: "comment-input" %>
+            <%= form.submit "Submit", class: "comment-button" %>
+          </div>
+        <% end %>
       </div>
-    <% end %>
+    </div>
   </div>
-</div>
-
-<script>
-  function initPostMap() {
-    const postLocation = { lat: <%= @post.latitude %>, lng: <%= @post.longitude %> };
-    const map = new google.maps.Map(document.getElementById('show-map'), {
-      zoom: 14,
-      center: postLocation
-    });
-    const marker = new google.maps.Marker({
-      position: postLocation,
-      map: map
-    });
-  }
-
-  document.addEventListener('turbo:load', initPostMap);
-</script>
-<%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_MAPS_API_KEY']}&callback=initPostMap", async: true, defer: true %>
+  <script>
+    function initMap() {
+      const postLocation = { lat: <%= @post.latitude %>, lng: <%= @post.longitude %> };
+      const map = new google.maps.Map(document.getElementById('show-map'), {
+        zoom: 15,
+        center: postLocation
+      });
+      new google.maps.Marker({
+        position: postLocation,
+        map: map
+      });
+    }
+  </script>
+  <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_MAPS_API_KEY']}&callback=initMap", async: true, defer: true %>
