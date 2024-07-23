@@ -10,7 +10,7 @@
 
 <p><%= @post.description %></p>
 
-<div id="post-map" style="height: 300px; width: 100%;"></div>
+<div id="show-map" style="height: 300px; width: 100%;"></div>
 
 <h2>Comments</h2>
 <div class="comments">
@@ -32,7 +32,7 @@
 <script>
   function initPostMap() {
     const postLocation = { lat: <%= @post.latitude %>, lng: <%= @post.longitude %> };
-    const map = new google.maps.Map(document.getElementById('post-map'), {
+    const map = new google.maps.Map(document.getElementById('show-map'), {
       zoom: 14,
       center: postLocation
     });

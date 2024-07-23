@@ -3,6 +3,7 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import "preview"
 
+
 // ページが読み込まれたときに実行するイベントリスナーを追加
 document.addEventListener('turbo:load', () => {
   // 現在のユーザーIDを取得
