@@ -27,7 +27,7 @@
                 <%= image_tag post.image, class: "card__img" %>
               <% end %>
               <div class="card__body">
-                <h2 class= "card__title"><%= post.title %></h2>
+              <h2 class="card__title"><%= link_to post.title, post_path(post) %></h2>
                 <p class="card__summary"><%= post.description %></p>
                 <% if user_signed_in? && current_user == @user %>
                   <%= link_to 'Edit', edit_post_path(post), class: 'edit-post-link' %>

@@ -36,15 +36,30 @@
   <% end %>
 </div>
 
+
 <!-- カスタムインフォウィンドウ -->
- <div id="custom-infowindow" class="custom-infowindow">
-    <span class="close-custom-window">&times;</span>
-    <div id="custom-infowindow-content"></div>
+<div id="custom-infowindow" class="custom-infowindow">
+  <span class="close-custom-window">&times;</span>
+  <div id="custom-infowindow-content">
+    <h3 id="infowindow-title"></h3>
+    <p id="infowindow-description"></p>
+    <p id="infowindow-user"></p>
+    <img id="custom-image" class="infowindow-image" />
+    <div id="comment-section">
+      <div id="comment-list"></div>
+      <form id="comment-form">
+        <textarea id="comment-text" placeholder="コメントを入力してください"></textarea>
+        <button type="submit" class="comment-submit-button">コメント投稿</button>
+      </form>
+    </div>
   </div>
-  <div id="image-modal" class="image-modal">
-    <span id="close-modal" class="close-modal">&times;</span>
-    <img class="modal-content" id="modal-image">
-  </div>
+</div>
+
+</div>
+<div id="image-modal" class="image-modal">
+  <span id="close-modal" class="close-modal">&times;</span>
+  <img class="modal-content" id="modal-image">
+</div>
 
 <!-- 最新の投稿表示用のセクション -->
 <div id="latest-posts-section">

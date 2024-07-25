@@ -38,7 +38,12 @@ document.addEventListener('turbo:load', () => {
         'X-Requested-With': 'XMLHttpRequest'
       }
     })
-    .then(response => response.json()) // レスポンスをJSONとしてパース
+    .then(response => {
+      if (!response.ok) {
+        return response.json().then(error => { throw new Error(error); });
+      }
+      return response.json();
+    })
     .then(data => {
       if (data.status === 'success') {
         // 新しい投稿をallPostsに追加
@@ -419,20 +424,91 @@ function displayCustomInfoWindow(post) {
     }
 
     // 投稿者の名前とそのリンクを追加
-    const content = `
-      <h3>${post.title}</h3>
-      <p>${post.description}</p>
-      <p><a href="${post.user_path}" target="_blank">投稿者：${post.user_name}</a></p>
-      <img id="custom-image" src="${post.image_url}" alt="${post.title}" style="width:${width}px;height:${height}px;cursor:pointer;"/>
-    `;
+    document.getElementById('infowindow-title').innerText = post.title;
+    document.getElementById('infowindow-description').innerText = post.description;
+    document.getElementById('infowindow-user').innerHTML = `<a href="${post.user_path}" target="_blank">投稿者：${post.user_name}</a>`;
 
-    document.getElementById('custom-infowindow-content').innerHTML = content;
-    document.getElementById('custom-infowindow').style.display = 'block';
+    fetch(`/posts/${post.id}/comments`)
+    .then(response => response.json())
+    .then(data => {
+      const commentList = document.getElementById('comment-list');
+      commentList.innerHTML = '';
+      data.forEach(comment => {
+        console.log(comment); // コメントオブジェクトを確認
+        const commentElement = document.createElement('div');
+        commentElement.className = 'comment';
+        const userName = comment.user ? comment.user.name : 'Unknown User';
+        const userPath = `/users/${comment.user.id}`;
+        commentElement.innerHTML = `
+          <p><strong><a href="${userPath}" target="_blank">${userName}</a>:</strong> ${comment.text}</p>
+        `;
+        commentList.appendChild(commentElement);
+      });
+    })
+    .catch(error => console.error('Error fetching comments:', error));
 
-    // 画像クリックイベント
-    document.getElementById('custom-image').onclick = () => {
+    // 画像を設定
+    const customImage = document.getElementById('custom-image');
+    customImage.src = post.image_url;
+    customImage.style.width = `${width}px`;
+    customImage.style.height = `${height}px`;
+    customImage.onclick = () => {
       showModal(post.image_url);
     };
+
+    document.getElementById('custom-infowindow').style.display = 'block';
+
+    // コメントフォームの送信イベントリスナーを設定
+    const commentForm = document.getElementById('comment-form');
+    commentForm.dataset.postId = post.id; // データ属性を動的に設定
+    
+    if (commentForm) { // コメントフォームが存在する場合にのみ処理を行う
+      commentForm.onsubmit = function(event) {
+        event.preventDefault();
+  
+        const postId = commentForm.dataset.postId; // データ属性からpost_idを取得
+        const commentText = document.getElementById('comment-text').value;
+  
+        console.log('postId:', postId); // デバッグ用
+        if (!postId) {
+          console.error('postId is undefined');
+          return;
+        }
+        fetch(`/posts/${post.id}/comments`, {
+          method: 'POST',
+          body: JSON.stringify({ comment: { text: commentText } }),
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+          }
+        })
+        .then(response => {
+          if (!response.ok) {
+            return response.text().then(error => { throw new Error(error); });
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data.status === 'success') {
+            const commentList = document.getElementById('comment-list');
+            const commentElement = document.createElement('div');
+            commentElement.className = 'comment';
+            const userName = data.user_name || 'Unknown User';
+            const userPath = `/users/${data.comment.user_id}`;
+            commentElement.innerHTML = `
+              <p><strong><a href="${userPath}" target="_blank">${userName}</a>:</strong> ${data.comment.text}</p>
+            `;
+            commentList.appendChild(commentElement);
+            document.getElementById('comment-text').value = ''; // フォームをリセット
+          } else {
+            console.error('Error:', data.errors);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      };
+    }
   };
 
   // 画像読み込みエラー時の処理
@@ -444,26 +520,7 @@ function displayCustomInfoWindow(post) {
   image.src = post.image_url;
 }
 
-// 画像をモーダルで表示する関数
-function showModal(imageUrl) {
-  const modal = document.getElementById('image-modal');
-  const modalImg = document.getElementById('modal-image');
-  const closeModal = document.getElementById('close-modal');
 
-  modal.style.display = "block";
-  modalImg.src = imageUrl;
-
-  closeModal.onclick = () => {
-    modal.style.display = "none";
-  };
-
-  // モーダルウィンドウ外をクリックしたときに閉じる
-  modal.onclick = (event) => {
-    if (event.target === modal) {
-      modal.style.display = "none";
-    }
-  };
-}
 
 // 最新の投稿を表示する関数
 function displayLatestPosts(posts) {

@@ -1,0 +1,41 @@
+ <div class="post-detail-container">
+    <div class="post-header">
+      <h1 class="post-title"><%= @post.title %></h1>
+      <p class="post-author">Posted by <%= @post.user.name %></p>
+    </div>
+    <div class="post-image">
+      <%= image_tag @post.image if @post.image.attached? %>
+    </div>
+    <div class="post-content">
+      <p><%= @post.description %></p>
+    </div>
+    <div id="show-map" class="post-map"></div>
+    <div class="comments-section">
+      <h2>Comments</h2>
+      <div class="comments">
+        <%= render @comments %>
+      </div>
+      <div class="new-comment">
+        <%= form_with(model: [@post, @comment], local: true) do |form| %>
+          <div class="form-group">
+            <%= form.text_area :text, placeholder: "コメントを入力してください", class: "comment-input" %>
+            <%= form.submit "Submit", class: "comment-button" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <script>
+    function initMap() {
+      const postLocation = { lat: <%= @post.latitude %>, lng: <%= @post.longitude %> };
+      const map = new google.maps.Map(document.getElementById('show-map'), {
+        zoom: 15,
+        center: postLocation
+      });
+      new google.maps.Marker({
+        position: postLocation,
+        map: map
+      });
+    }
+  </script>
+  <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_MAPS_API_KEY']}&callback=initMap", async: true, defer: true %>
