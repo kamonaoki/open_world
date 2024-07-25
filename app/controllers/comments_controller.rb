@@ -1,14 +1,19 @@
 class CommentsController < ApplicationController
- 
+  def index
+    @post = Post.find(params[:post_id])
+    @comments = @post.comments.includes(:user)
+    render json: @comments.to_json(include: { user: { only: [:id, :name] } })
+  end
+
   def create
     @post = Post.find(params[:post_id])
     @comment = @post.comments.build(comment_params)
     @comment.user = current_user
 
     if @comment.save
-      redirect_to @post
+      render json: { status: 'success', comment: @comment, user_name: current_user.name }
     else
-      redirect_to @post
+      render json: { status: 'error', errors: @comment.errors.full_messages }
     end
   end
 
@@ -17,9 +22,9 @@ class CommentsController < ApplicationController
     @comment = @post.comments.find(params[:id])
     if @comment.user == current_user
       @comment.destroy
-      redirect_to @post, notice: 'コメントが削除されました。'
+      render json: { status: 'success', message: 'コメントが削除されました。' }
     else
-      redirect_to @post, alert: 'コメントの削除に失敗しました。'
+      render json: { status: 'error', message: 'コメントの削除に失敗しました。' }
     end
   end
 
