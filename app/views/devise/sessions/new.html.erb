@@ -1,24 +1,26 @@
 <body class="login-page">
   <div class="login-container">
     <div class="login-form">
-      <h1>Log in</h1>
       <%= form_with model: @user, url: user_session_path, id: 'new_user', class: 'new_user', local: true do |f| %>
       <div class="form-group">
-       <%= f.email_field :email, autofocus: true, placeholder: "メールアドレスを入力してください", class: "input-field" %>
-       <%= f.password_field :password, autocomplete: "off", placeholder: "パスワードを入力してください", class: "input-field" %>
+        <%= f.email_field :email, autofocus: true, placeholder: "メールアドレスを入力してください", class: "input-field" %>
+        <%= f.password_field :password, autocomplete: "off", placeholder: "パスワードを入力してください", class: "input-field" %>
       </div>
-       <div class="form-group">
-        <%= f.submit "Log in", class: "login-button" %>
-       </div>
+      <div class="form-group">
+        <%= f.submit "ログイン", class: "login-button" %>
+      </div>
       <% end %>
-
       <div class="signup-link">
         <p>新規登録の方は <%= link_to 'こちら', new_user_registration_path %> からどうぞ。</p>
       </div>
     </div>
   </div>
-     <section class="showcase">
-   <video src="/images/fantasy.mp4" autoplay muted loop></video>
-      <div class="overlay"></div>
-       </section>
+  <section class="showcase">
+    <video src="/images/fantasy.mp4" autoplay muted loop></video>
+    <div class="overlay"></div>
+    <div class="description">
+      <h1>お気に入りの場所、どこ？</h1>
+<p>Open Worldは、写真を地図に貼ってお気に入りの場所を視覚化し、シェアできるアプリです。友達の写真もすぐ見つけられるから、新しいお気に入りのスポットが見つかるかも。さあ、自分の世界をもっと広げよう！</p>
+    </div>
+  </section>
 </body>

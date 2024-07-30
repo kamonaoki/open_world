@@ -519,7 +519,26 @@ function displayCustomInfoWindow(post) {
   // 画像のURLを設定
   image.src = post.image_url;
 }
+// 画像をモーダルで表示する関数
+function showModal(imageUrl) {
+  const modal = document.getElementById('image-modal');
+  const modalImg = document.getElementById('modal-image');
+  const closeModal = document.getElementById('close-modal');
 
+  modal.style.display = "block";
+  modalImg.src = imageUrl;
+
+  closeModal.onclick = () => {
+    modal.style.display = "none";
+  };
+
+  // モーダルウィンドウ外をクリックしたときに閉じる
+  modal.onclick = (event) => {
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  };
+}
 
 
 // 最新の投稿を表示する関数
